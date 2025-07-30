@@ -1,0 +1,4 @@
+CREATE TABLE categorias(
+    id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+    categoria VARCHAR(150) UNIQUE
+)
