@@ -2,10 +2,13 @@ package com.github.viinicius_muller.inventory_stock_manager.controller;
 
 import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
+import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoryListData;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.NewCategoriaData;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("categorias")
@@ -16,7 +19,12 @@ public class CategoriaController {
 
     @PostMapping
     @Transactional
-    public void adicionarCategoria(@RequestBody NewCategoriaData data) {
+    public void addCategoria(@RequestBody NewCategoriaData data) {
         repository.save(new Categoria(null, data.nome()));
+    }
+
+    @GetMapping
+    public List<CategoryListData> showCategorias() {
+        return repository.findAll().stream().map(CategoryListData::new).toList();
     }
 }
