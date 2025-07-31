@@ -1,18 +1,22 @@
 package com.github.viinicius_muller.inventory_stock_manager.controller;
 
+import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
+import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.NewCategoriaData;
 import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("categorias")
 public class CategoriaController {
 
+    @Autowired
+    private CategoriaRepository repository;
+
     @PostMapping
-    public void adicionarCategoria(@RequestBody NewCategoriaData json) {
-        System.out.println(json);
+    @Transactional
+    public void adicionarCategoria(@RequestBody NewCategoriaData data) {
+        repository.save(new Categoria(null, data.nome()));
     }
 }
