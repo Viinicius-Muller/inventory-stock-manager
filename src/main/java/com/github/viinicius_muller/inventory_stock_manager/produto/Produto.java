@@ -1,5 +1,6 @@
 package com.github.viinicius_muller.inventory_stock_manager.produto;
 
+import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ public class Produto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String produto;
+    private String nome;
     private String descricao;
-    @NotBlank
-    private String categoria;
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 }
