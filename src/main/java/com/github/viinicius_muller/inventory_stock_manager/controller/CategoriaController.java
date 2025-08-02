@@ -24,7 +24,7 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public List<CategoryListData> showCategorias() {
+    public List<CategoryListData> getCategorias() {
         return categoriaRepository.findAll().stream().map(CategoryListData::new).toList();
     }
 }
