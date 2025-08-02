@@ -1,11 +1,16 @@
 package com.github.viinicius_muller.inventory_stock_manager.controller;
 
+import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
+import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.NewProdutoData;
 import com.github.viinicius_muller.inventory_stock_manager.produto.Produto;
 import com.github.viinicius_muller.inventory_stock_manager.produto.ProdutoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,12 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository repository;
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @PostMapping
     @Transactional
-    public void addProduto(NewProdutoData data) {
-        System.out.println(data);
-        repository.save(new Produto(null, data.nome(),data.descricao(),data.categoria()));
+    public Produto addProduto(@RequestBody NewProdutoData data) {
+        System.out.println(data.categoria());
+        Categoria categoria = categoriaRepository.findByCategoria(data.categoria())
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada: " + data.categoria()));
+
+        return produtoRepository.save(new Produto(null,data.nome(),data.descricao(),categoria));
     }
 }

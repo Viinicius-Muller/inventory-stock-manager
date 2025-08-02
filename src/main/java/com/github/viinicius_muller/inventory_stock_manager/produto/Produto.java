@@ -20,6 +20,7 @@ public class Produto {
     @NotBlank
     private String nome;
     private String descricao;
+    @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 }

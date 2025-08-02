@@ -15,16 +15,16 @@ import java.util.List;
 public class CategoriaController {
 
     @Autowired
-    private CategoriaRepository repository;
+    private CategoriaRepository categoriaRepository;
 
     @PostMapping
     @Transactional
-    public void addCategoria(@RequestBody NewCategoriaData data) {
-        repository.save(new Categoria(null, data.nome()));
+    public Categoria addCategoria(@RequestBody NewCategoriaData data) {
+        return categoriaRepository.save(new Categoria(null, data.nome()));
     }
 
     @GetMapping
     public List<CategoryListData> showCategorias() {
-        return repository.findAll().stream().map(CategoryListData::new).toList();
+        return categoriaRepository.findAll().stream().map(CategoryListData::new).toList();
     }
 }
