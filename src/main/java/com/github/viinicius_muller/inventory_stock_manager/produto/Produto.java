@@ -52,4 +52,12 @@ public class Produto {
             preco_atual = data.preco_atual();
         }
     }
+
+    public void desativar() {
+        this.ativo = false;
+    }
+
+    public void ativar() {
+        this.ativo = true;
+    }
 }

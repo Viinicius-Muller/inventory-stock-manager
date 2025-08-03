@@ -17,7 +17,7 @@ public class CategoriaController {
     @PostMapping
     @Transactional
     public Categoria addCategoria(@RequestBody NewCategoriaData data) {
-        return categoriaRepository.save(new Categoria(null, data.nome()));
+        return categoriaRepository.save(new Categoria(null,true, data.nome()));
     }
 
     @GetMapping
@@ -30,5 +30,12 @@ public class CategoriaController {
     public void updateCategoria(@RequestBody UpdateCategoriaData data, @PathVariable Long id) {
         var categoria = categoriaRepository.getReferenceById(id);
         categoria.update(data);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteCategoria(@PathVariable Long id) {
+        var categoria = categoriaRepository.getReferenceById(id);
+        categoria.desativar();
     }
 }

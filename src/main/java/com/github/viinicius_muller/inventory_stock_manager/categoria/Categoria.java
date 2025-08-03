@@ -16,10 +16,19 @@ import lombok.NoArgsConstructor;
 public class Categoria {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean ativo;
     @NotBlank
     private String categoria;
 
     public void update(UpdateCategoriaData data) {
         if (data.nome() != null && !data.nome().trim().isEmpty()) categoria = data.nome();
+    }
+
+    public void desativar() {
+        this.ativo = false;
+    }
+
+    public void ativar() {
+        this.ativo = true;
     }
 }
