@@ -39,8 +39,10 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public List<ProductListData> getProdutos() {
-        return produtoRepository.findAll().stream().map(ProductListData::new).toList();
+    public List<ProductListData> getProdutos(@RequestParam(name = "ativo",required = false) Boolean ativo) {
+        //if ativo param is present, return by ativo
+        if (ativo != null) return produtoRepository.findByAtivo(ativo).stream().map(ProductListData::new).toList();
+        return produtoRepository.findAllByAtivoTrue().stream().map(ProductListData::new).toList();
     }
 
     @PatchMapping("/{id}")

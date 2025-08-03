@@ -21,8 +21,10 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public List<CategoryListData> getCategorias() {
-        return categoriaRepository.findAll().stream().map(CategoryListData::new).toList();
+    public List<CategoryListData> getCategorias(@RequestParam(name = "ativo",required = false) Boolean ativo) {
+        //if ativo param is present, return by ativo
+        if (ativo != null ) return categoriaRepository.findByAtivo(ativo).stream().map(CategoryListData::new).toList();
+        return categoriaRepository.findAllByAtivoTrue().stream().map(CategoryListData::new).toList();
     }
 
     @PatchMapping("/{id}")
