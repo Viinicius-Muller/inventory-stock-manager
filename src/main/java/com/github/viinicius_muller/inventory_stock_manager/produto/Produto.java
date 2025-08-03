@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Table(name = "produtos")
 @Entity(name = "produto")
 @Getter
@@ -17,10 +19,11 @@ import lombok.NoArgsConstructor;
 public class Produto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean ativo = true;
+    private boolean ativo;
     @NotBlank
     private String nome;
     private String descricao;
+    private BigDecimal preco_atual;
     private int estoque_atual;
     private int estoque_minimo;
     @ManyToOne
