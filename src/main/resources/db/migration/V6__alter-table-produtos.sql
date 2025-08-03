@@ -1,0 +1,5 @@
+ALTER TABLE produtos
+ADD COLUMN preco_atual DECIMAL(7,2),
+ADD COLUMN estoque_atual INT DEFAULT 0 NOT NULL,
+ADD COLUMN estoque_minimo INT,
+ADD COLUMN ativo BOOLEAN DEFAULT TRUE

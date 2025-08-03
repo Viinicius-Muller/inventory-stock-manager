@@ -17,9 +17,12 @@ import lombok.NoArgsConstructor;
 public class Produto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean ativo = true;
     @NotBlank
     private String nome;
     private String descricao;
+    private int estoque_atual;
+    private int estoque_minimo;
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
