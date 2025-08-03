@@ -30,7 +30,7 @@ public class ProdutoController {
         Categoria categoria = categoriaRepository.findByCategoria(data.categoria())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada: " + data.categoria()));
 
-        return produtoRepository.save(new Produto(null,true,data.nome(),data.descricao(),data.estoque(),data.estoque_minimo(),categoria));
+        return produtoRepository.save(new Produto(null,true,data.nome(),data.descricao(),data.estoque_atual(),data.estoque_minimo(),categoria));
     }
 
     @GetMapping
