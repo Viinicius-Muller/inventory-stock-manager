@@ -1,9 +1,6 @@
 package com.github.viinicius_muller.inventory_stock_manager.controller;
 
-import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
-import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
-import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoryListData;
-import com.github.viinicius_muller.inventory_stock_manager.categoria.NewCategoriaData;
+import com.github.viinicius_muller.inventory_stock_manager.categoria.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +23,12 @@ public class CategoriaController {
     @GetMapping
     public List<CategoryListData> getCategorias() {
         return categoriaRepository.findAll().stream().map(CategoryListData::new).toList();
+    }
+
+    @PatchMapping("/{id}")
+    @Transactional
+    public void updateCategoria(@RequestBody UpdateCategoriaData data, @PathVariable Long id) {
+        var categoria = categoriaRepository.getReferenceById(id);
+        categoria.update(data);
     }
 }

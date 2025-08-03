@@ -18,4 +18,8 @@ public class Categoria {
     private Long id;
     @NotBlank
     private String categoria;
+
+    public void update(UpdateCategoriaData data) {
+        if (data.nome() != null && !data.nome().trim().isEmpty()) categoria = data.nome();
+    }
 }
