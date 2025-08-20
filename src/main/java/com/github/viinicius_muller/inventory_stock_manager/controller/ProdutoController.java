@@ -63,7 +63,7 @@ public class ProdutoController {
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
         var produto = produtoRepository.getReferenceById(id);
-        produto.update(data);
+        produto.update(data, movimentacaoRepository);
     }
 
     @DeleteMapping("/{id}")

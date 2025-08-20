@@ -1,6 +1,8 @@
 package com.github.viinicius_muller.inventory_stock_manager.produto;
 
 import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
+import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Movimentacao;
+import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.exception.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -8,8 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 
 @Table(name = "produtos")
 @Entity(name = "produto")
@@ -31,13 +36,24 @@ public class Produto {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    public void update(UpdateProdutoData data) {
+    public void update(UpdateProdutoData data, MovimentacaoRepository movimentacaoRepository) {
         if (data.nome() != null && !data.nome().trim().isEmpty()) nome = data.nome();
 
         if (data.descricao() != null) descricao = data.descricao();
 
         if (data.estoque_atual() != null) {
             if (data.estoque_atual() < 0) throw new NegativeEstoqueAtualException("O estoque atual não pode ser um valor negativo.");
+
+            String tipo = estoque_atual > data.estoque_atual() ? "Saída" : "Entrada";
+            int quantidade =  data.estoque_atual() - estoque_atual;
+
+            movimentacaoRepository.save(new Movimentacao(
+                    null,
+                    this,
+                    quantidade,
+                    LocalDate.now(),
+                    tipo
+            ));
             estoque_atual = data.estoque_atual();
 
         }
