@@ -2,12 +2,15 @@ package com.github.viinicius_muller.inventory_stock_manager.controller;
 
 import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
+import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Movimentacao;
+import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,14 +23,17 @@ public class ProdutoController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private MovimentacaoRepository movimentacaoRepository;
+
     @PostMapping
     @Transactional
-    public Produto addProduto(@RequestBody NewProdutoData data) {
+    public void addProduto(@RequestBody NewProdutoData data) {
         System.out.println(data.categoria());
         Categoria categoria = categoriaRepository.findByCategoria(data.categoria())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada: " + data.categoria()));
 
-        return produtoRepository.save(new Produto(
+        Produto p = produtoRepository.save(new Produto(
                 null,
                 true,
                 data.nome(),
@@ -36,6 +42,14 @@ public class ProdutoController {
                 data.estoque_atual(),
                 data.estoque_minimo(),
                 categoria));
+
+        movimentacaoRepository.save(new Movimentacao(
+                null,
+                p,
+                p.getEstoque_atual(),
+                LocalDate.now(),
+                "Novo produto"
+        ));
     }
 
     @GetMapping
