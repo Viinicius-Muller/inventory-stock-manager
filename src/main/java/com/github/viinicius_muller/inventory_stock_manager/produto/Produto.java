@@ -6,6 +6,8 @@ import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Moviment
 import com.github.viinicius_muller.inventory_stock_manager.produto.exception.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,9 +28,10 @@ public class Produto {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean ativo;
-    @NotBlank
+    @NotBlank(message = "Nome do produto não pode estar vazio.")
     private String nome;
     private String descricao;
+    @PositiveOrZero(message = "Preço deve ser 0 ou positivo.")
     private BigDecimal preco_atual;
     private int estoque_atual;
     private int estoque_minimo;

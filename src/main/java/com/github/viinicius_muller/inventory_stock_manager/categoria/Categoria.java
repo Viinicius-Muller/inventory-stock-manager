@@ -17,7 +17,7 @@ public class Categoria {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean ativo;
-    @NotBlank
+    @NotBlank(message = "Nome da categoria não pode estar vazio")
     private String categoria;
 
     public void update(UpdateCategoriaData data) {

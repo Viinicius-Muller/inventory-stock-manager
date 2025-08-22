@@ -23,10 +23,10 @@ public class Movimentacao {
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
-    @NotNull
+    @NotNull(message = "Quantidade não pode ser nula.")
     private int quantidade;
-    @NotNull
+    @NotNull(message = "Data não pode ser nula.")
     private LocalDate data;
-    @NotBlank
+    @NotBlank(message = "A descrição do tipo não pode ser nula.")
     private String tipo;
 }
