@@ -5,7 +5,7 @@ import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRe
 import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Movimentacao;
 import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
-import com.github.viinicius_muller.inventory_stock_manager.produto.exception.ActiveProdutoException;
+import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
@@ -74,7 +74,7 @@ public class ProdutoController {
         var produto = produtoRepository.getReferenceById(id);
 
         if (produto.isAtivo()) {
-            throw new ActiveProdutoException("O produto já está ativado: "+ produto);
+            throw new ActiveObjectException("Produto '"+produto.getNome()+"'já ativo");
         }
 
         produto.ativar();

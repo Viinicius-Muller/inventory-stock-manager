@@ -20,6 +20,10 @@ public class Categoria {
     @NotBlank(message = "Nome da categoria não pode estar vazio")
     private String categoria;
 
+    public boolean isAtivo() {
+        return this.ativo;
+    }
+
     public void update(UpdateCategoriaData data) {
         if (data.nome() != null && !data.nome().trim().isEmpty()) categoria = data.nome();
     }

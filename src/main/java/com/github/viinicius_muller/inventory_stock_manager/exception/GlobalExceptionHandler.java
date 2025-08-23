@@ -63,4 +63,17 @@ public class GlobalExceptionHandler {
 
         return  new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ActiveObjectException.class)
+    public ResponseEntity<Object> handleActiveObject(ActiveObjectException err) {
+        String msg = "Erro ao ativar objeto: "+err.getMessage()+".";
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Conflito de Dados");
+        body.put("message: ", msg);
+
+        return  new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }
