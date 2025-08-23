@@ -61,6 +61,15 @@ public class ProdutoController {
         return produtoRepository.findAllByAtivoTrueAndCategoriaAtivo().stream().map(ProductListData::new).toList();
     }
 
+    //get by id
+    @GetMapping("/{id}")
+    public List<ProductListData> getProdutoById(@PathVariable Long id) {
+        var produto = produtoRepository.findById(id);
+
+        if (produto.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
+        return produto.stream().map(ProductListData::new).toList();
+    }
+
     @PatchMapping("/{id}")
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
