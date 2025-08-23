@@ -17,11 +17,10 @@ public class MovimentacaoController {
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
 
+    //gets movimentacoes by product id
     @GetMapping
     public List<MovimentacaoListData> getMovimentacoes(@RequestParam(name = "id",required = false) Long produto_id) {
-        if (produto_id != null) {
-            return movimentacaoRepository.findAllByProduto_id(produto_id).stream().map(MovimentacaoListData::new).toList();
-        }
+        if (produto_id != null) return movimentacaoRepository.findAllByProduto_id(produto_id).stream().map(MovimentacaoListData::new).toList();
 
         return movimentacaoRepository.findAll().stream().map(MovimentacaoListData::new).toList();
     }
