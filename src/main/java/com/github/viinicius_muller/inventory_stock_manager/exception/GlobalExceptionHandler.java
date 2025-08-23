@@ -29,15 +29,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
-    //Objetos não encotrados pelo ‘id’
+    //Objetos não encotrados
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleNoEntity(EntityNotFoundException err) {
-        String msg = "Objeto não encontrado na base de dados.";
+        String[] partes = err.getMessage().split(" ");
+
+        String msg = err.getMessage(); //colocar valor no final
+        String tipoObjeto = partes[0];
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Id Inválido");
+        body.put("error", "Objeto Inválido");
+        body.put("tipo", tipoObjeto);
         body.put("message: ", msg);
 
         return  new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
