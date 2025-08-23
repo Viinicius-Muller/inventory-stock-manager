@@ -58,7 +58,11 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteCategoria(@PathVariable Long id) {
-        var categoria = categoriaRepository.getReferenceById(id);
+        var categoriaOpt = categoriaRepository.findById(id);
+
+        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
+
+        Categoria categoria = categoriaOpt.get();
         categoria.desativar();
     }
 }

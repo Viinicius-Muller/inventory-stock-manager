@@ -93,7 +93,11 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteProduto(@PathVariable Long id) {
-        var produto = produtoRepository.getReferenceById(id);
+        var produtoOpt = produtoRepository.findById(id);
+
+        if (produtoOpt.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
+
+        Produto produto = produtoOpt.get();
         produto.desativar();
     }
 }
