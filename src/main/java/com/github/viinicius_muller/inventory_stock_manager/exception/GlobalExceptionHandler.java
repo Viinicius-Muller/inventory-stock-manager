@@ -1,6 +1,7 @@
 package com.github.viinicius_muller.inventory_stock_manager.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +72,25 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Conflito de Dados");
+        body.put("error", "Objeto já ativo");
+        body.put("message: ", msg);
+
+        return  new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException err) {
+        String violations = err.getConstraintViolations().toString();
+        String[] log = violations.split("'");
+
+        String erro = log[1];
+
+        String msg = "Erro ao declarar atributos: "+erro;
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Violação de Atributos");
         body.put("message: ", msg);
 
         return  new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
