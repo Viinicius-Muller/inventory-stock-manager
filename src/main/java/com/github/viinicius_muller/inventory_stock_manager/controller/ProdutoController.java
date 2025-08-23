@@ -58,14 +58,14 @@ public class ProdutoController {
     public List<ProductListData> getProdutos(@RequestParam(name = "ativo",required = false) Boolean ativo) {
         //if ativo param is present, return by ativo
         if (ativo != null) return produtoRepository.findByAtivo(ativo).stream().map(ProductListData::new).toList();
-        return produtoRepository.findAllByAtivoTrue().stream().map(ProductListData::new).toList();
+        return produtoRepository.findAllByAtivoTrueAndCategoriaAtivo().stream().map(ProductListData::new).toList();
     }
 
     @PatchMapping("/{id}")
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
-        var produto = produtoRepository.getReferenceById(id);
-        produto.update(data, movimentacaoRepository);
+       var produto = produtoRepository.getReferenceById(id);
+       produto.update(data, movimentacaoRepository);
     }
 
     @PatchMapping("/{id}/reativar")

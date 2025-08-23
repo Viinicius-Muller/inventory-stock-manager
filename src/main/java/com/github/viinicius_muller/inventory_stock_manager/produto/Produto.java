@@ -35,7 +35,7 @@ public class Produto {
     private BigDecimal preco_atual;
     private int estoque_atual;
     private int estoque_minimo;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
