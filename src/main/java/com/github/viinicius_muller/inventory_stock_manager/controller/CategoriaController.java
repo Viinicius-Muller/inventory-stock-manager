@@ -2,12 +2,14 @@ package com.github.viinicius_muller.inventory_stock_manager.controller;
 
 import com.github.viinicius_muller.inventory_stock_manager.categoria.*;
 import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("categorias")
@@ -32,7 +34,11 @@ public class CategoriaController {
     @PatchMapping("/{id}")
     @Transactional
     public void updateCategoria(@RequestBody UpdateCategoriaData data, @PathVariable Long id) {
-        var categoria = categoriaRepository.getReferenceById(id);
+        var categoriaOpt = categoriaRepository.findById(id);
+
+        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
+
+        Categoria categoria = categoriaOpt.get();
         categoria.update(data);
     }
 
