@@ -35,21 +35,23 @@ public class CategoriaController {
     @Transactional
     public void updateCategoria(@RequestBody UpdateCategoriaData data, @PathVariable Long id) {
         var categoriaOpt = categoriaRepository.findById(id);
-
         if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
+        //if not found, catch exception
 
+        //transforms Optional<Categoria> into Categoria
         Categoria categoria = categoriaOpt.get();
         categoria.update(data);
     }
 
     @PatchMapping("/{id}/reativar")
     @Transactional
-    public @NotBlank String reativarProduto(@PathVariable Long id) {
-        var categoria = categoriaRepository.getReferenceById(id);
+    public @NotBlank String reativarCategoria(@PathVariable Long id) {
+        var categoriaOpt = categoriaRepository.findById(id);
+        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
 
-        if (categoria.isAtivo()) {
-            throw new ActiveObjectException("Categoria '"+categoria.getCategoria()+"' já ativa");
-        }
+        Categoria categoria = categoriaOpt.get();
+
+        if (categoria.isAtivo()) throw new ActiveObjectException("Categoria '"+categoria.getCategoria()+"' já ativa");
 
         categoria.ativar();
         return "Categoria reativada: " + categoria.getCategoria();

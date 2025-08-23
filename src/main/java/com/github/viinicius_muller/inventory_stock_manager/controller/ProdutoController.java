@@ -80,11 +80,14 @@ public class ProdutoController {
     @PatchMapping("/{id}/reativar")
     @Transactional
     public @NotBlank String reativarProduto(@PathVariable Long id) {
-        var produto = produtoRepository.getReferenceById(id);
+        var produtoOpt = produtoRepository.findById(id);
+        if (produtoOpt.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
+        //if not found, catch exception
 
-        if (produto.isAtivo()) {
-            throw new ActiveObjectException("Produto '"+produto.getNome()+"'já ativo");
-        }
+        //transforms Optional<Produto> into Produto
+        Produto produto = produtoOpt.get();
+
+        if (produto.isAtivo()) throw new ActiveObjectException("Produto '"+produto.getNome()+"'já ativo");
 
         produto.ativar();
         return "Produto reativado: " + produto.getNome();
@@ -94,7 +97,6 @@ public class ProdutoController {
     @Transactional
     public void deleteProduto(@PathVariable Long id) {
         var produtoOpt = produtoRepository.findById(id);
-
         if (produtoOpt.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
 
         Produto produto = produtoOpt.get();
