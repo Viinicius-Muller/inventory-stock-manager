@@ -6,6 +6,9 @@ import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Moviment
 import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
 import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +31,11 @@ public class ProdutoController {
     @Autowired
     private MovimentacaoRepository movimentacaoRepository;
 
+    @Operation(description = "Adiciona um novo produto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Novo produto criado"),
+            @ApiResponse(responseCode = "400",description = "Falha no corpo da requisição")
+    })
     @PostMapping
     @Transactional
     public void addProduto(@RequestBody NewProdutoData data) {
@@ -54,6 +62,11 @@ public class ProdutoController {
         ));
     }
 
+    @Operation(description = "Retorna produtos cadastrados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Retorna os produtos"),
+            @ApiResponse(responseCode = "400",description = "Falha na utilização dos parâmetros")
+    })
     @GetMapping
     public List<ProductListData> getProdutos(
             @RequestParam(name = "ativo",required = false) Boolean ativo,
@@ -92,6 +105,11 @@ public class ProdutoController {
                 .toList();
     }
 
+    @Operation(description = "Retorna um produto pelo seu Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Retorna o produto"),
+            @ApiResponse(responseCode = "400",description = "Id inexistente")
+    })
     //get by id
     @GetMapping("/{id}")
     public List<ProductListData> getProdutoById(@PathVariable Long id) {
@@ -101,6 +119,11 @@ public class ProdutoController {
         return produto.stream().map(ProductListData::new).toList();
     }
 
+    @Operation(description = "Atualiza atributos de um produto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Atualiza o produto"),
+            @ApiResponse(responseCode = "400",description = "Id inexistente ou falha no corpo da requisição")
+    })
     @PatchMapping("/{id}")
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
@@ -108,6 +131,11 @@ public class ProdutoController {
        produto.update(data, movimentacaoRepository);
     }
 
+    @Operation(description = "Altera o atributo Ativo de um produto para verdadeiro")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Ativa o produto"),
+            @ApiResponse(responseCode = "400",description = "Produto já ativo ou Id inexistente")
+    })
     @PatchMapping("/{id}/reativar")
     @Transactional
     public @NotBlank String reativarProduto(@PathVariable Long id) {
@@ -124,6 +152,11 @@ public class ProdutoController {
         return "Produto reativado: " + produto.getNome();
     }
 
+    @Operation(description = "Altera o atributo Ativo de um produto para falso")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Desativa o produto"),
+            @ApiResponse(responseCode = "400",description = "Produto já inativo ou Id inexistente")
+    })
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteProduto(@PathVariable Long id) {
