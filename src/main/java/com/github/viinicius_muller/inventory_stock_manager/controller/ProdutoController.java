@@ -7,6 +7,7 @@ import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Moviment
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
 import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,8 +70,8 @@ public class ProdutoController {
     })
     @GetMapping
     public List<ProductListData> getProdutos(
-            @RequestParam(name = "ativo",required = false) Boolean ativo,
-            @RequestParam(name = "categoria", required = false) String nomeCategoria)
+           @Parameter(description = "Atributo 'ativo' do produto", example = "true") @RequestParam(name = "ativo",required = false) Boolean ativo,
+           @Parameter(description = "Nome da categoria", example = "Eletronicos") @RequestParam(name = "categoria", required = false) String nomeCategoria)
     {
         if (nomeCategoria !=null) {
             //throws exception for non-existent category
