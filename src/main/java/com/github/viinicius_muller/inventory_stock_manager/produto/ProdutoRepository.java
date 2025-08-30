@@ -10,4 +10,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Query("SELECT p FROM produto p WHERE p.ativo = true AND p.categoria.ativo = true")
     List<Produto> findAllByAtivoTrueAndCategoriaAtivo();
+
+    @Query("SELECT p FROM produto p WHERE p.categoria.categoria = ?1")
+    List<Produto> findAllByCategoria(String nomeCategoria);
 }

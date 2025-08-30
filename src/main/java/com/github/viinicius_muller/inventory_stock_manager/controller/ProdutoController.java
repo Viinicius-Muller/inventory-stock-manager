@@ -55,7 +55,12 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public List<ProductListData> getProdutos(@RequestParam(name = "ativo",required = false) Boolean ativo) {
+    public List<ProductListData> getProdutos(
+            @RequestParam(name = "ativo",required = false) Boolean ativo,
+            @RequestParam(name = "categoria", required = false) String nomeCategoria)
+    {
+        if (nomeCategoria != null) return produtoRepository.findAllByCategoria(nomeCategoria).stream().map(ProductListData::new).toList();
+
         //if ativo param is present, return by ativo
         if (ativo != null) return produtoRepository.findByAtivo(ativo).stream().map(ProductListData::new).toList();
         return produtoRepository.findAllByAtivoTrueAndCategoriaAtivo().stream().map(ProductListData::new).toList();
