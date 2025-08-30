@@ -59,17 +59,25 @@ public class ProdutoController {
             @RequestParam(name = "ativo",required = false) Boolean ativo,
             @RequestParam(name = "categoria", required = false) String nomeCategoria)
     {
-        //returns all isAtivo = true products from a category
-        if (nomeCategoria != null && ativo != null) return produtoRepository.findAllByCategoriaAndAtivo(nomeCategoria,ativo)
-                .stream()
-                .map(ProductListData::new).
-                toList();
+        if (nomeCategoria !=null) {
+            //throws exception for non-existent category
+            var categoria = categoriaRepository.findByCategoria(nomeCategoria).isEmpty();
+            if (categoria) throw new EntityNotFoundException("Categoria não encontrada");
 
-        //returns all products from a category
-        if (nomeCategoria != null) return produtoRepository.findAllByCategoria(nomeCategoria)
-                .stream()
-                .map(ProductListData::new)
-                .toList();
+            //returns all products from a category by isAtivo bool
+            if (ativo != null) {
+                return produtoRepository.findAllByCategoriaAndAtivo(nomeCategoria,ativo)
+                        .stream()
+                        .map(ProductListData::new).
+                        toList();
+            }
+
+            //returns all products from a category
+            return produtoRepository.findAllByCategoria(nomeCategoria)
+                    .stream()
+                    .map(ProductListData::new)
+                    .toList();
+        }
 
         //only returns products where isAtivo = true
         if (ativo != null) return produtoRepository.findByAtivo(ativo)
