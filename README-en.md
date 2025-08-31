@@ -1,4 +1,3 @@
-````markdown
 # Inventory Stock Manager
 
 Restful API for creating and managing categories, products, and movements.
