@@ -8,6 +8,7 @@ import com.github.viinicius_muller.inventory_stock_manager.produto.*;
 import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
@@ -66,7 +67,7 @@ public class ProdutoController {
     @Operation(description = "Retorna produtos cadastrados")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Retorna os produtos"),
-            @ApiResponse(responseCode = "400",description = "Falha na utilização dos parâmetros")
+            @ApiResponse(responseCode = "400",description = "Falha na utilização dos parâmetros", content = @Content)
     })
     @GetMapping
     public List<ProductListData> getProdutos(
@@ -109,7 +110,7 @@ public class ProdutoController {
     @Operation(description = "Retorna um produto pelo seu Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Retorna o produto"),
-            @ApiResponse(responseCode = "400",description = "Id inexistente")
+            @ApiResponse(responseCode = "400",description = "Id inexistente", content = @Content)
     })
     //get by id
     @GetMapping("/{id}")
@@ -134,8 +135,8 @@ public class ProdutoController {
 
     @Operation(description = "Altera o atributo Ativo de um produto para verdadeiro")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Ativa o produto"),
-            @ApiResponse(responseCode = "400",description = "Produto já ativo ou Id inexistente")
+            @ApiResponse(responseCode = "200",description = "Ativa o produto", content = @Content),
+            @ApiResponse(responseCode = "400",description = "Produto já ativo ou Id inexistente", content = @Content)
     })
     @PatchMapping("/{id}/reativar")
     @Transactional
