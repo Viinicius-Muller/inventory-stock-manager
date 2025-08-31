@@ -29,7 +29,7 @@ public class MovimentacaoController {
     })
     //gets movimentacoes by product id
     @GetMapping
-    public List<MovimentacaoListData> getMovimentacoes(@Parameter(description = "Retorna todas as movimentações de um produto pelo seu id", example = "1") @RequestParam(name = "id",required = false) Long produto_id) {
+    public List<MovimentacaoListData> getMovimentacoes(@Parameter(description = "Retorna todas as movimentações de um produto pelo seu id", example = "1") @RequestParam(name = "produtoId",required = false) Long produto_id) {
         if (produto_id != null) return movimentacaoRepository.findAllByProduto_id(produto_id).stream().map(MovimentacaoListData::new).toList();
 
         return movimentacaoRepository.findAll().stream().map(MovimentacaoListData::new).toList();
