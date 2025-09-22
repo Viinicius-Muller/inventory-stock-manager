@@ -180,3 +180,4 @@ Para contribuir com esse projeto utilize a [página](https://github.com/Viiniciu
 
 ### Contato
 André Vinicius Müller | [Linkedin](www.linkedin.com/in/andré-vinicius-muller-432b17327) | zandreviniciusmuller@gmail.com
+Lucas
