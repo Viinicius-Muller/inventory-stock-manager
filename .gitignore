@@ -6,7 +6,9 @@ target/
 
 #Enviroment Variables
 .env
-application.properties
+
+#App config
+src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
