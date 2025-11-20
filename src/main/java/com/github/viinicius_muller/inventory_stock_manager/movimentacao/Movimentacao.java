@@ -9,7 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+
 
 @Table(name = "movimentacoes")
 @Entity(name = "movimentacao")
@@ -20,13 +22,17 @@ import java.time.LocalDate;
 public class Movimentacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
+
     @NotNull(message = "Quantidade não pode ser nula.")
     private int quantidade;
+
     @NotNull(message = "Data não pode ser nula.")
-    private LocalDate data;
-    @NotBlank(message = "A descrição do tipo não pode ser nula.")
-    private String tipo;
+    private LocalDateTime data;
+
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 }
