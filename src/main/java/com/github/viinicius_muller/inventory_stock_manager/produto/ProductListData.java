@@ -5,14 +5,14 @@ import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 
-public record ProductListData(Long id, String produto, String descricao_do_produto, String categoria, int estoque_atual, BigDecimal preco_atual) {
+public record ProductListData(Long id, String produto, String descricao, String categoria, int estoque, BigDecimal preco) {
     public ProductListData(Produto produto) {
         this(
                 produto.getId(),
                 produto.getNome(),
-                produto.getCategoria().getCategoria(), //get category's name
                 produto.getDescricao(),
+                produto.getCategoria().getCategoria(),
                 produto.getEstoque_atual(),
-                produto.getPreco_atual());
+                produto.getPreco());
     }
 }

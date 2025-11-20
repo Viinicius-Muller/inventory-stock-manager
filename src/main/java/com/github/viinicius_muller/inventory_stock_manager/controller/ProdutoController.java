@@ -1,8 +1,6 @@
 package com.github.viinicius_muller.inventory_stock_manager.controller;
 
-import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
-import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Movimentacao;
 import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
 import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
@@ -17,8 +15,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -44,7 +40,7 @@ public class ProdutoController {
     public void addProduto(@RequestBody NewProdutoData data) {
         System.out.println(data.categoria_id());
 
-        Categoria categoria = categoriaRepository.findByCategoria(data.categoria_id())
+        var categoria = categoriaRepository.findById(data.categoria_id())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada pelo id: " + data.categoria_id()));
 
         Produto p = new Produto();
@@ -107,13 +103,17 @@ public class ProdutoController {
             @ApiResponse(responseCode = "200",description = "Retorna o produto"),
             @ApiResponse(responseCode = "400",description = "Id inexistente", content = @Content)
     })
-    //get by id
-    @GetMapping("/{id}")
-    public List<ProductListData> getProdutoById(@PathVariable Long id) {
-        var produto = produtoRepository.findById(id);
 
-        if (produto.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
-        return produto.stream().map(ProductListData::new).toList();
+    @GetMapping("/{id}")
+    public ProductListData getProdutoById(@PathVariable Long id) {
+        var produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+
+        return toDTO(produto);
+    }
+
+    public ProductListData toDTO(Produto produto) {
+        return new ProductListData(produto);
     }
 
     @Operation(description = "Atualiza atributos de um produto")
@@ -130,27 +130,6 @@ public class ProdutoController {
        produto.update(data, categoria);
     }
 
-    @Operation(description = "Altera o atributo Ativo de um produto para verdadeiro")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Ativa o produto", content = @Content),
-            @ApiResponse(responseCode = "400",description = "Produto já ativo ou Id inexistente", content = @Content)
-    })
-    @PatchMapping("/{id}/reativar")
-    @Transactional
-    public @NotBlank String reativarProduto(@PathVariable Long id) {
-        var produtoOpt = produtoRepository.findById(id);
-        if (produtoOpt.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
-        //if not found, catch exception
-
-        //transforms Optional<Produto> into Produto
-        Produto produto = produtoOpt.get();
-
-        if (produto.isAtivo()) throw new ActiveObjectException("Produto '"+produto.getNome()+"'já ativo");
-
-        produto.ativar();
-        return "Produto reativado: " + produto.getNome();
-    }
-
     @Operation(description = "Altera o atributo Ativo de um produto para falso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Desativa o produto"),
@@ -159,10 +138,9 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteProduto(@PathVariable Long id) {
-        var produtoOpt = produtoRepository.findById(id);
-        if (produtoOpt.isEmpty()) throw new EntityNotFoundException("Produto não encontrado.");
+        var produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
 
-        Produto produto = produtoOpt.get();
-        produto.desativar();
+        produtoRepository.delete(produto);
     }
 }

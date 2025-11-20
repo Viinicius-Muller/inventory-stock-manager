@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public record NewProdutoData(
         String nome,
         String descricao,
-        String categoria_id,
+        Long categoria_id,
         BigDecimal preco,
         int estoque_atual,
         int estoque_minimo,
