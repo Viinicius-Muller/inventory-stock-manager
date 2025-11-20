@@ -1,11 +1,8 @@
-package com.github.viinicius_muller.inventory_stock_manager.produto;
+package com.github.viinicius_muller.inventory_stock_manager.domain.produto;
 
-import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public record UpdateProdutoData(
         String nome,

@@ -1,4 +1,4 @@
-package com.github.viinicius_muller.inventory_stock_manager.categoria;
+package com.github.viinicius_muller.inventory_stock_manager.domain.categoria;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

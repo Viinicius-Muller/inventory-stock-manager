@@ -1,4 +1,4 @@
-package com.github.viinicius_muller.inventory_stock_manager.produto.exception;
+package com.github.viinicius_muller.inventory_stock_manager.domain.produto.exception;
 
 public class NegativePrecoAtualException extends RuntimeException {
     public NegativePrecoAtualException(String message) {

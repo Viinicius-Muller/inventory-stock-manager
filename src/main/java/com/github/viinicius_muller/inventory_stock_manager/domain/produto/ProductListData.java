@@ -1,7 +1,4 @@
-package com.github.viinicius_muller.inventory_stock_manager.produto;
-
-import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
-import jakarta.persistence.Column;
+package com.github.viinicius_muller.inventory_stock_manager.domain.produto;
 
 import java.math.BigDecimal;
 

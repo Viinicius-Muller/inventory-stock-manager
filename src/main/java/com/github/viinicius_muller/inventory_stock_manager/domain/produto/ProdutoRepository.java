@@ -1,4 +1,4 @@
-package com.github.viinicius_muller.inventory_stock_manager.produto;
+package com.github.viinicius_muller.inventory_stock_manager.domain.produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

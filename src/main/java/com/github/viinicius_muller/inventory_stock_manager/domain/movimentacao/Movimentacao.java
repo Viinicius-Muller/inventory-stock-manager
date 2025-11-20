@@ -1,13 +1,9 @@
-package com.github.viinicius_muller.inventory_stock_manager.movimentacao;
+package com.github.viinicius_muller.inventory_stock_manager.domain.movimentacao;
 
-import com.github.viinicius_muller.inventory_stock_manager.produto.Produto;
+import com.github.viinicius_muller.inventory_stock_manager.domain.produto.Produto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Table(name = "movimentacoes")
 @Entity(name = "movimentacao")
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")

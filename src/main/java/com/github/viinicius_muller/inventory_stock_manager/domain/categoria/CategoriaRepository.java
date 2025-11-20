@@ -1,4 +1,4 @@
-package com.github.viinicius_muller.inventory_stock_manager.categoria;
+package com.github.viinicius_muller.inventory_stock_manager.domain.categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,10 +1,9 @@
-package com.github.viinicius_muller.inventory_stock_manager.controller;
+package com.github.viinicius_muller.inventory_stock_manager.controllers;
 
-import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
-import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
-import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
-import com.github.viinicius_muller.inventory_stock_manager.produto.*;
-import com.github.viinicius_muller.inventory_stock_manager.exception.ActiveObjectException;
+import com.github.viinicius_muller.inventory_stock_manager.domain.categoria.Categoria;
+import com.github.viinicius_muller.inventory_stock_manager.domain.categoria.CategoriaRepository;
+import com.github.viinicius_muller.inventory_stock_manager.domain.movimentacao.MovimentacaoRepository;
+import com.github.viinicius_muller.inventory_stock_manager.domain.produto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
