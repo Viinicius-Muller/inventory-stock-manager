@@ -1,25 +1,18 @@
 package com.github.viinicius_muller.inventory_stock_manager.produto;
 
 import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
-import com.github.viinicius_muller.inventory_stock_manager.movimentacao.Movimentacao;
-import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
-import com.github.viinicius_muller.inventory_stock_manager.produto.exception.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Table(name = "produtos")
 @Entity(name = "produto")
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -36,7 +29,7 @@ public class Produto {
     private String descricao;
 
     @PositiveOrZero(message = "Preço deve ser 0 ou positivo.")
-    private BigDecimal preco_atual;
+    private BigDecimal preco;
 
     private int estoque_atual;
     private int estoque_minimo;
@@ -45,28 +38,14 @@ public class Produto {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    public void update(UpdateProdutoData data, MovimentacaoRepository movimentacaoRepository) {
+    public void update(UpdateProdutoData data, Categoria categoria) {
         if (data.nome() != null && !data.nome().trim().isEmpty()) nome = data.nome();
 
-        if (data.descricao() != null) descricao = data.descricao();
+        if (data.descricao() != null) this.descricao = data.descricao();
 
-        if (data.estoque_atual() != null) {
-            if (data.estoque_atual() < 0) throw new NegativeEstoqueAtualException("O estoque atual não pode ser um valor negativo.");
+        if (data.preco() != null) this.preco = data.preco();
 
-            int quantidade =  data.estoque_atual() - estoque_atual;
-            estoque_atual = data.estoque_atual();
-
-        }
-        if (data.estoque_minimo() != null) {
-            if (data.estoque_minimo() < 0) throw new NegativeEstoqueMinimoException("O estoque mínimo não pode ser um valor negativo.");
-            estoque_minimo = data.estoque_minimo();
-
-        }
-
-        if (data.preco_atual() != null) {
-            if (data.preco_atual().signum() == -1) throw new NegativePrecoAtualException("O preco atual não pode ser um valor negatívo");
-            preco_atual = data.preco_atual();
-        }
+        if (categoria != null) this.categoria = categoria;
     }
 
     public void desativar() {

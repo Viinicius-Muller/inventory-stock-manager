@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,27 +42,21 @@ public class ProdutoController {
     @PostMapping
     @Transactional
     public void addProduto(@RequestBody NewProdutoData data) {
-        System.out.println(data.categoria());
-        Categoria categoria = categoriaRepository.findByCategoria(data.categoria())
-                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada: " + data.categoria()));
+        System.out.println(data.categoria_id());
 
-        Produto p = produtoRepository.save(new Produto(
-                null,
-                true,
-                data.nome(),
-                data.descricao(),
-                data.preco_atual(),
-                data.estoque_atual(),
-                data.estoque_minimo(),
-                categoria));
+        Categoria categoria = categoriaRepository.findByCategoria(data.categoria_id())
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada pelo id: " + data.categoria_id()));
 
-        movimentacaoRepository.save(new Movimentacao(
-                null,
-                p,
-                p.getEstoque_atual(),
-                LocalDate.now(),
-                "Novo produto"
-        ));
+        Produto p = new Produto();
+        p.setNome(data.nome());
+        p.setDescricao(data.descricao());
+        p.setCategoria(categoria);
+        p.setPreco(data.preco());
+        p.setEstoque_atual(data.estoque_atual());
+        p.setEstoque_minimo(data.estoque_minimo());
+        p.setAtivo(data.ativo());
+
+        produtoRepository.save(p);
     }
 
     @Operation(description = "Retorna produtos cadastrados")
@@ -130,7 +125,9 @@ public class ProdutoController {
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
        var produto = produtoRepository.getReferenceById(id);
-       produto.update(data, movimentacaoRepository);
+       var categoria = categoriaRepository.getReferenceById(data.categoria_id());
+
+       produto.update(data, categoria);
     }
 
     @Operation(description = "Altera o atributo Ativo de um produto para verdadeiro")

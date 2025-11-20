@@ -28,13 +28,6 @@ public class Categoria {
 
     public void update(UpdateCategoriaData data) {
         if (data.nome() != null && !data.nome().trim().isEmpty()) categoria = data.nome();
-    }
-
-    public void desativar() {
-        this.ativo = false;
-    }
-
-    public void ativar() {
-        this.ativo = true;
+        if (data.ativo() != null) this.ativo = data.ativo();
     }
 }

@@ -55,32 +55,9 @@ public class CategoriaController {
     @PatchMapping("/{id}")
     @Transactional
     public void updateCategoria(@RequestBody UpdateCategoriaData data, @PathVariable Long id) {
-        var categoriaOpt = categoriaRepository.findById(id);
-        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
-        //if not found, catch exception
+        var categoria = categoriaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada."));
 
-        //transforms Optional<Categoria> into Categoria
-        Categoria categoria = categoriaOpt.get();
         categoria.update(data);
-    }
-
-    @Operation(description = "Altera o atributo Ativo de uma categoria para verdadeiro")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Ativa a categoria", content = @Content),
-            @ApiResponse(responseCode = "400",description = "Categoria já ativa ou Id inexistente", content = @Content)
-    })
-    @PatchMapping("/{id}/reativar")
-    @Transactional
-    public @NotBlank String reativarCategoria(@PathVariable Long id) {
-        var categoriaOpt = categoriaRepository.findById(id);
-        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
-
-        Categoria categoria = categoriaOpt.get();
-
-        if (categoria.isAtivo()) throw new ActiveObjectException("Categoria '"+categoria.getCategoria()+"' já ativa");
-
-        categoria.ativar();
-        return "Categoria reativada: " + categoria.getCategoria();
     }
 
     @Operation(description = "Altera o atributo Ativo de um produto para falso")
@@ -91,11 +68,7 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteCategoria(@PathVariable Long id) {
-        var categoriaOpt = categoriaRepository.findById(id);
-
-        if (categoriaOpt.isEmpty()) throw new EntityNotFoundException("Categoria não encontrada.");
-
-        Categoria categoria = categoriaOpt.get();
-        categoria.desativar();
+        var categoria = categoriaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada."));
+        categoriaRepository.delete(categoria);
     }
 }
