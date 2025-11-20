@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules/
+
+# Next.js build output
+.next/
+
+# SWC cache
+.swc/
+
+# Environment variables
+.env.local
+.env.*.local
+.env
+
+# Local development files
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.vscode/
+
+# Vercel-specific files (if deploying to Vercel)
+.vercel/
