@@ -1,5 +1,6 @@
 package com.github.viinicius_muller.inventory_stock_manager.controller;
 
+import com.github.viinicius_muller.inventory_stock_manager.categoria.Categoria;
 import com.github.viinicius_muller.inventory_stock_manager.categoria.CategoriaRepository;
 import com.github.viinicius_muller.inventory_stock_manager.movimentacao.MovimentacaoRepository;
 import com.github.viinicius_muller.inventory_stock_manager.produto.*;
@@ -62,8 +63,8 @@ public class ProdutoController {
     })
     @GetMapping
     public List<ProductListData> getProdutos(
-           @Parameter(description = "Atributo 'ativo' do produto", example = "true") @RequestParam(name = "ativo",required = false) Boolean ativo,
-           @Parameter(description = "Nome da categoria", example = "Eletronicos") @RequestParam(name = "categoria", required = false) String nomeCategoria)
+           @Parameter(description = "Atributo 'ativo' do produto") @RequestParam(name = "ativo",required = false) Boolean ativo,
+           @Parameter(description = "Nome da categoria") @RequestParam(name = "categoria", required = false) String nomeCategoria)
     {
         if (nomeCategoria !=null) {
             //throws exception for non-existent category
@@ -92,7 +93,7 @@ public class ProdutoController {
                 .toList();
 
         //only returns where product isAtivo = true and category isAtivo = true
-        return produtoRepository.findAllByAtivoTrueAndCategoriaAtivo()
+        return produtoRepository.findAll()
                 .stream()
                 .map(ProductListData::new)
                 .toList();
@@ -124,8 +125,16 @@ public class ProdutoController {
     @PatchMapping("/{id}")
     @Transactional
     public void updateProduto(@RequestBody UpdateProdutoData data, @PathVariable Long id) {
-       var produto = produtoRepository.getReferenceById(id);
-       var categoria = categoriaRepository.getReferenceById(data.categoria_id());
+       var produto = produtoRepository.findById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+
+        Categoria categoria = null;
+
+       if (data.categoria_id() != null) {
+           categoria = categoriaRepository.findById(data.categoria_id())
+                   .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada."));
+       }
+
 
        produto.update(data, categoria);
     }

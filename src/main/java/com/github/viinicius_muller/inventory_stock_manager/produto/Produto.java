@@ -45,6 +45,8 @@ public class Produto {
 
         if (data.preco() != null) this.preco = data.preco();
 
+        if (data.ativo() != null) this.ativo = data.ativo();
+
         if (categoria != null) this.categoria = categoria;
     }
 
